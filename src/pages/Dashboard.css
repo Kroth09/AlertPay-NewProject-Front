@@ -1,0 +1,211 @@
+/* Arquivo: src/pages/Dashboard.css (VERSÃO DARK MODE FINAL) */
+
+/* --- Layout Principal --- */
+.dashboard-page {
+  min-height: 100vh;
+  background-color: #121212;
+}
+
+/* --- Cabeçalho --- */
+.dashboard-header {
+  background-color: #1e1e1e;
+  border-bottom: 1px solid #282828;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.2);
+}
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4rem;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 1.5rem;
+}
+.header-title h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* --- Botões --- */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+.btn-primary {
+  background-color: #1DB954;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #1ed760;
+}
+.btn-secondary {
+  background-color: #404040;
+  color: #ffffff;
+}
+.btn-secondary:hover {
+  background-color: #535353;
+}
+
+/* --- Conteúdo Principal --- */
+.dashboard-main {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1.5rem;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+/* --- Cards --- */
+.dashboard-card {
+  background-color: #282828;
+  border: 1px solid #404040;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.2);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #404040;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+.card-header h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+.card-header-icon {
+  margin-right: 0.75rem;
+  font-size: 1.125rem;
+}
+.icon-blue { color: #60a5fa; }
+.icon-green { color: #4ade80; }
+.icon-indigo { color: #818cf8; }
+.card-body p {
+  color: #a0a0a0;
+}
+
+/* --- Estilos para Faturas (Pagas e a Pagar) --- */
+.faturas-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.fatura-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #404040;
+  border-radius: 8px;
+  border: 1px solid #535353;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.fatura-item:hover {
+  border-color: #1DB954;
+  background-color: #484848;
+}
+.fatura-info {
+  flex-grow: 1;
+  min-width: 0;
+}
+.fatura-descricao {
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fatura-vencimento {
+  font-size: 0.875rem;
+  color: #a0a0a0;
+}
+.fatura-details {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.fatura-status, .status-paga {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+.status-atrasada {
+  color: #f87171;
+}
+.status-paga {
+  color: #22c55e;
+}
+.fatura-paga-item .fatura-descricao {
+  text-decoration: line-through;
+  color: #a0a0a0; /* Corrigido para ser legível no fundo escuro */
+}
+.fatura-valor {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #ffffff;
+  min-width: 120px;
+  text-align: right;
+}
+.fatura-actions-btn {
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: color 0.2s, background-color 0.2s;
+}
+.fatura-actions-btn:hover {
+  color: #ffffff;
+  background-color: #535353;
+}
+
+
+/* --- Media Queries --- */
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  /* NOVAS REGRAS DE LAYOUT PARA OS CARDS */
+  .card-faturas-a-pagar {
+    grid-column: span 2 / span 2;
+  }
+  .card-faturas-pagas {
+    grid-column: span 1 / span 1;
+  }
+  .card-calendario {
+    grid-column: span 3 / span 3;
+  }
+}
+
+@media (max-width: 640px) {
+  .fatura-status, .status-paga {
+    display: none;
+  }
+}

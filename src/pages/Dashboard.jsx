@@ -1,63 +1,77 @@
-// src/Components/Dashboard/Dashboard.jsx
-//import React, { useState } from 'react';
-import './Dashboard.css'; // Seu CSS para o Dashboard
-// Importe os futuros componentes das seções aqui
-// import FaturasAPagar from './FaturasAPagar';
-// import FaturasPagas from './FaturasPagas';
-// import CalendarioFaturas from './CalendarioFaturas';
-// import AdicionarFaturaWidget from './AdicionarFaturaWidget';
+// Arquivo: pages/Dashboard.jsx (VERSÃO COM LAYOUT CORRIGIDO)
+import FaturasAPagar from '../components/dashboard/FaturasAPagar';
+import { FaPlus, FaFileInvoiceDollar, FaCheckCircle, FaCalendarAlt } from 'react-icons/fa';
+import './Dashboard.css';
+import FaturasPagas from '../components/dashboard/FaturasPagas';
+import CalendarioFaturas from '../components/dashboard/CalendarioFaturas';
+
 
 function Dashboard({ onLogout }) {
-  // Exemplo de estado para controlar qual seção está ativa (se usar abas)
-  // const [activeSection, setActiveSection] = useState('aPagar');
+
+  const handleNovaFatura = () => {
+    alert('Funcionalidade de adicionar nova fatura a ser implementada!');
+  };
+
 
   return (
-    <div className="dashboard-container p-4 md:p-8"> {/* Exemplo de classes Tailwind */}
-      <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Meu Dashboard</h1>
-        <button 
-          onClick={onLogout} 
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Logout
-        </button>
+    <div className="dashboard-page">
+      <header className="dashboard-header">
+        <div className="header-content">
+          <div className="header-title">
+            <h1>AlertPay Dashboard</h1>
+          </div>
+          <div className="header-actions">
+            <button className="btn btn-primary" onClick={handleNovaFatura}>
+              <FaPlus />
+              <span>Nova Fatura</span>
+            </button>
+            <button className="btn btn-secondary" onClick={onLogout}>
+              Logout
+            </button>
+          </div>
+        </div>
       </header>
 
-      {/* Aqui você pode adicionar um sistema de navegação (abas, botões) ou listar as seções */}
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* Seção de Faturas a Pagar */}
-        <div className="col-span-1 md:col-span-2 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4 text-gray-700">Faturas a Pagar</h2>
-          {/* <FaturasAPagar /> */}
-          <p className="text-gray-600">Conteúdo da lista de faturas a pagar virá aqui...</p>
+      {/* A MUDANÇA PRINCIPAL ACONTECE AQUI NO MAIN */}
+      <main className="dashboard-main">
+        <div className="dashboard-grid">
+          {/* Card 1 com sua classe específica */}
+          <section className="dashboard-card card-faturas-a-pagar">
+            <div className="card-header">
+              <FaFileInvoiceDollar className="card-header-icon icon-blue" />
+              <h2>Faturas a Pagar</h2>
+            </div>
+            <div className="card-body">
+              <FaturasAPagar />
+            </div>
+          </section>
+
+          {/* Card 2 com sua classe específica */}
+          <section className="dashboard-card card-faturas-pagas">
+            <div className="card-header">
+              <FaCheckCircle className="card-header-icon icon-green" />
+              <h2>Faturas Pagas</h2>
+            </div>
+            <div className="card-body">
+              <FaturasPagas />
+            </div>
+          </section>
+
+          {/* Card 3 (Calendário) com sua classe específica */}
+          <section className="dashboard-card card-calendario">
+            <div className="card-header">
+              <FaCalendarAlt className="card-header-icon icon-indigo" />
+              <h2>Calendário</h2>
+            </div>
+            <div className="card-body">
+              <CalendarioFaturas />
+            </div>
+          </section>
         </div>
-
-        {/* Seção de Faturas Pagas */}
-        <div className="col-span-1 md:col-span-1 bg-white p-6 rounded-lg shadow">
-          <h2 className="text-xl font-semibold mb-4 text-gray-700">Faturas Pagas</h2>
-          {/* <FaturasPagas /> */}
-          <p className="text-gray-600">Conteúdo da lista de faturas pagas virá aqui...</p>
-        </div>
-      </div>
-
-      {/* Seção do Calendário */}
-      <div className="mt-6 bg-white p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">Calendário de Faturas</h2>
-        {/* <CalendarioFaturas /> */}
-        <p className="text-gray-600">O calendário interativo virá aqui...</p>
-        {/* Seu documento menciona exibição em calendário com cores/ícones por status [cite: 29, 30] */}
-      </div>
-
-      {/* Você pode adicionar outras seções aqui, como as sugeridas */}
-      {/* <div className="mt-6 bg-white p-6 rounded-lg shadow">
-        <h2 className="text-xl font-semibold mb-4 text-gray-700">Adicionar Nova Fatura</h2>
-        {/* <AdicionarFaturaWidget /> * /}
-      </div>
-      */}
-
+      </main>
     </div>
   );
 }
+
 
 export default Dashboard;

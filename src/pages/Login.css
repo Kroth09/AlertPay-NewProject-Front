@@ -1,248 +1,105 @@
-/* Arquivo: Login.css (VERSÃO MODO ESCURO) */
+/* Arquivo: pages/Login.css */
 
-/* Define o fundo escuro para a página inteira e centraliza o conteúdo */
-/* Em vez de usar um container, aplicamos direto no body para garantir a tela toda */
-/* Se isso afetar outras páginas, podemos criar uma classe no div principal do Login */
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #121212; /* Cor de fundo escura do Spotify */
-    color: #ffffff; /* Cor de texto padrão: branco */
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.login-page-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #121212; /* Fundo escuro da página */
 }
 
-/* O card de login */
-.container {
-    width: 100%;
-    max-width: 420px; /* Largura máxima do card */
-    background-color: #282828; /* Cinza escuro do Spotify para o card */
-    border: 1px solid #404040;
-    padding: 40px;
-    border-radius: 12px; /* Bordas mais arredondadas */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  background-color: #282828;
+  color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Título */
-.container h1 {
-    text-align: center;
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 30px;
+.login-container h1 {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-/* Wrapper para cada input e ícone */
-.container .input-field {
-    position: relative;
-    width: 100%;
-    margin-bottom: 20px;
+.input-field {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
 }
 
-/* Estilo dos campos de input */
 .input-field input {
-    width: 100%;
-    height: 50px;
-    background-color: #404040;
-    border: 1px solid #535353;
-    border-radius: 8px;
-    color: #ffffff;
-    font-size: 16px;
-    padding: 0 50px 0 20px; /* Espaço para o ícone à direita */
-    box-sizing: border-box; /* Garante que padding não afete a largura total */
-    transition: border-color 0.3s;
+  width: 100%;
+  height: 50px;
+  background-color: #404040;
+  border: 1px solid #535353;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 0 45px 0 15px;
+  font-size: 16px;
 }
 
-/* Remove a borda padrão do navegador quando o input está focado */
 .input-field input:focus {
-    outline: none;
-    border-color: #1DB954; /* Borda verde Spotify ao focar */
+  outline: none;
+  border-color: #1DB954; /* Verde Spotify */
 }
 
-/* Placeholder (texto de exemplo) */
-.input-field input::placeholder {
-    color: #a0a0a0;
-}
-
-/* Ícone dentro do input */
 .input-field .icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-    color: #a0a0a0;
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: #a0a0a0;
 }
 
-/* Seção "Lembre de mim" e "Esqueci a senha" */
-.container .recall-forget {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    margin-top: 25px;
-    margin-bottom: 25px;
-    color: #a0a0a0;
-}
-
-.recall-forget label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.recall-forget input[type="checkbox"] {
-    margin-right: 8px;
+.recall-forget {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #a0a0a0;
+  margin-top: -10px;
+  margin-bottom: 25px;
 }
 
 .recall-forget a {
-    color: #a0a0a0;
-    text-decoration: none;
+  color: #a0a0a0;
+  text-decoration: none;
 }
 
-.recall-forget a:hover,
-.signup-link a:hover {
-    text-decoration: underline;
-    color: #ffffff;
+.recall-forget a:hover, .signup-link a:hover {
+  text-decoration: underline;
+  color: #ffffff;
 }
 
-/* Botão principal de "Entrar" */
-.container button {
-    width: 100%;
-    height: 50px;
-    background-color: #1DB954; /* Verde Spotify! */
-    color: #ffffff;
-    border: none;
-    border-radius: 50px; /* Bordas bem arredondadas */
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: bold;
-    transition: background-color 0.3s;
+.login-container button {
+  width: 100%;
+  padding: 15px;
+  background-color: #1DB954; /* Verde Spotify */
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
-.container button:hover {
-    background-color: #1ed760; /* Verde mais claro no hover */
+.login-container button:hover {
+  background-color: #1ed760;
 }
 
-/* Link de "Registrar" na parte inferior */
-.container .signup-link {
-    font-size: 14px;
-    text-align: center;
-    margin-top: 25px;
-    color: #a0a0a0;
+.signup-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #a0a0a0;
 }
 
 .signup-link a {
-    color: #1DB954; /* Link com a cor de destaque */
-    font-weight: bold;
-    text-decoration: none;
+  color: #1DB954;
+  font-weight: bold;
+  text-decoration: none;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-codigo antigo
-.container {
-    width: 450px;
-    background-color: rgba(135, 206, 235, 0.15);
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(135, 206, 235, 0.20);
-    padding: 40px;
-    border-radius: 10px;
-    display: block;
-    margin: 100px auto;
-}
-
-.container h1{
-    text-align: center;
-    font-size: 30px;
-}
-
-.container .input-field {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin: 30px auto;
-}
-
-.input-field input {
-
-    width: 100%;
-    height: 100%;
-    background-color: transparent;
-    border-radius: 40px;
-    font-size: 16px;
-    padding: 20px 25px;
-}
-
-.input-field .icon {
-    position: absolute;
-    right: 25px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 18px;
-}
-
-.container .recall-forget {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14.5px;
-    margin: -15px 0 15px;
-}
-
-/*.recall-forget .label {
-}*/ 
-
-/*.recall-forget .input {
-    margin-right: 5px;
-}
-
-.recall-forget a ,
-.signup-link p a {
-    color: black;
-    text-decoration: none;
-}
-
-.recall-forget a:hover,
-.signup-link p a:hover {
-    text-decoration: underline;
-}
-
-.container button {
-    width: 100%;
-    height: 50px;
-    background-color: #fff;
-    border: none;
-    outline: none;
-    border-radius: 40px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.container .signup-link {
-
-    font-size: 15px;
-    text-align: center;
-    margin: 20px 0 10px;
-
-}
-
-*/
