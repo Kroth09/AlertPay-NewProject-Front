@@ -4,7 +4,8 @@ import StoreContext from './Store/context';
 import ProtectedRoute from './components/ProtectedRoutes'; 
 import Login from './pages/Login';                     
 import Dashboard from './pages/Dashboard';  
-import Register from './pages/Register';             
+import Register from './pages/Register';        
+import AdicionarFaturaPage from './pages/AdicionarFaturasPage';     
 //import './App.css'; 
 
 function App() {
@@ -29,6 +30,10 @@ function App() {
         <Route 
           path="/dashboard" 
           element={<Dashboard onLogout={handleLogout} />} 
+        />
+        <Route 
+          path="/adicionar-fatura" 
+          element={<AdicionarFaturaPage />} 
         />
       </Route>
     </Routes>

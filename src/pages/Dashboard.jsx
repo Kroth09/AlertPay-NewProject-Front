@@ -6,6 +6,8 @@ import { FaPlus, FaFileInvoiceDollar, FaCheckCircle, FaCalendarAlt } from 'react
 import './Dashboard.css';
 import FaturasPagas from '../components/dashboard/FaturasPagas';
 import CalendarioFaturas from '../components/dashboard/CalendarioFaturas';
+import { useNavigate } from 'react-router';
+
 
 const mockFaturas = [
   { id: 1, descricao: 'Fatura de Energia - RGE', valor: 245.80, vencimento: '2025-06-02', status: 'Atrasada' },
@@ -17,11 +19,10 @@ const mockFaturas = [
 ];
 
 function Dashboard({ onLogout }) {
-  const [todasAsFaturas, setTodasAsFaturas] = useState(mockFaturas);
+ 
+    const [todasAsFaturas, setTodasAsFaturas] = useState(mockFaturas);
+    const navigate = useNavigate()
 
-  const handleNovaFatura = () => {
-    alert('Funcionalidade de adicionar nova fatura a ser implementada!');
-  };
 
   function _marcarComoPaga(faturaId) {
     const faturasAtualizadas = todasAsFaturas.map(fatura => {
@@ -32,6 +33,7 @@ function Dashboard({ onLogout }) {
     });
     setTodasAsFaturas(faturasAtualizadas);
   }
+
 
   const _faturasAPagar = todasAsFaturas.filter(f => f.status !== 'Paga');
   const _faturasPagas = todasAsFaturas.filter(f => f.status === 'Paga');
@@ -44,7 +46,7 @@ function Dashboard({ onLogout }) {
             <h1>AlertPay Dashboard</h1>
           </div>
           <div className="header-actions">
-            <button className="btn btn-primary" onClick={handleNovaFatura}>
+            <button className="btn btn-primary" onClick={() => navigate('/adicionar-fatura')}>
               <FaPlus />
               <span>Nova Fatura</span>
             </button>
