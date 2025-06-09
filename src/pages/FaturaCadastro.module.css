@@ -1,0 +1,182 @@
+/* src/pages/FaturaCadastro.module.css */
+
+.pageContainer {
+  min-height: 100vh;
+  background-color: #121212; /* Fundo da página, igual ao dashboard */
+  color: #ffffff; /* Cor do texto padrão */
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: #1e1e1e; /* Cor do cabeçalho, igual ao dashboard */
+  border-bottom: 1px solid #282828;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.2);
+  padding: 0 1.5rem;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 4rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #404040;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+}
+
+.backButton:hover {
+  background-color: #535353;
+}
+
+.title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.mainContent {
+  flex-grow: 1;
+  max-width: 1280px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+}
+
+.formCard {
+  background-color: #282828;
+  border: 1px solid #404040;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.2);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.formCard h2 {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-size: 1.8em;
+  border-bottom: 1px solid #404040;
+  padding-bottom: 15px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #a0a0a0;
+}
+
+.input,
+.select {
+  padding: 12px 15px;
+  border: 1px solid #535353;
+  background-color: #404040;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 1em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input::placeholder {
+  color: #a0a0a0;
+}
+
+.input:focus,
+.select:focus {
+  border-color: #1DB954;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(29, 185, 84, 0.25);
+}
+
+.submitButton {
+  padding: 15px 25px;
+  background-color: #1DB954;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  align-self: flex-end;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #1ed760;
+}
+
+.submitButton:disabled {
+  background-color: #0d4a25;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.mensagem {
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.sucesso {
+  background-color: #22c55e;
+  color: #155724;
+  border: 1px solid #1a8f4c;
+}
+
+.erro {
+  background-color: #f87171;
+  color: #721c24;
+  border: 1px solid #d04d4d;
+}
+
+@media (max-width: 768px) {
+  .headerContent {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 1rem 1.5rem;
+  }
+  .title {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+  }
+  .backButton {
+    align-self: flex-start;
+  }
+  .mainContent {
+    margin: 1rem auto;
+    padding: 0 1rem;
+  }
+  .formCard {
+    padding: 1rem;
+  }
+}

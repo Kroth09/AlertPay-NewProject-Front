@@ -1,4 +1,6 @@
-// Arquivo: pages/Dashboard.jsx (VERSÃO COM LAYOUT CORRIGIDO)
+// src/pages/Dashboard.jsx
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import FaturasAPagar from '../components/dashboard/FaturasAPagar';
 import { FaPlus, FaFileInvoiceDollar, FaCheckCircle, FaCalendarAlt } from 'react-icons/fa';
 import './Dashboard.css';
@@ -7,11 +9,11 @@ import CalendarioFaturas from '../components/dashboard/CalendarioFaturas';
 
 
 function Dashboard({ onLogout }) {
+  const navigate = useNavigate();
 
   const handleNovaFatura = () => {
-    alert('Funcionalidade de adicionar nova fatura a ser implementada!');
+    navigate('/cadastro-fatura'); // Redireciona para a rota de cadastro
   };
-
 
   return (
     <div className="dashboard-page">
@@ -32,10 +34,8 @@ function Dashboard({ onLogout }) {
         </div>
       </header>
 
-      {/* A MUDANÇA PRINCIPAL ACONTECE AQUI NO MAIN */}
       <main className="dashboard-main">
         <div className="dashboard-grid">
-          {/* Card 1 com sua classe específica */}
           <section className="dashboard-card card-faturas-a-pagar">
             <div className="card-header">
               <FaFileInvoiceDollar className="card-header-icon icon-blue" />
@@ -46,7 +46,6 @@ function Dashboard({ onLogout }) {
             </div>
           </section>
 
-          {/* Card 2 com sua classe específica */}
           <section className="dashboard-card card-faturas-pagas">
             <div className="card-header">
               <FaCheckCircle className="card-header-icon icon-green" />
@@ -57,7 +56,6 @@ function Dashboard({ onLogout }) {
             </div>
           </section>
 
-          {/* Card 3 (Calendário) com sua classe específica */}
           <section className="dashboard-card card-calendario">
             <div className="card-header">
               <FaCalendarAlt className="card-header-icon icon-indigo" />
@@ -72,6 +70,5 @@ function Dashboard({ onLogout }) {
     </div>
   );
 }
-
 
 export default Dashboard;
