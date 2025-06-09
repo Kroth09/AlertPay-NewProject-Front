@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoutes';
 import Login from './pages/Login';                     
 import Dashboard from './pages/Dashboard';               
 import FaturaCadastro from './pages/FaturaCadastro'; // Importe diretamente o arquivo
+import Register from './pages/Register';   
 
 function App() {
   const { setToken } = useContext(StoreContext);
@@ -20,6 +21,7 @@ function App() {
     <Routes>
       {/* Rotas Públicas */}
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/" element={<Login />} />
 
       {/* Rotas Protegidas aninhadas dentro do ProtectedRoute */}
