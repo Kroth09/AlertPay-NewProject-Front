@@ -2,7 +2,7 @@
 
 import { FaLock, FaUser } from 'react-icons/fa';
 import { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import StoreContext from '../Store/context';
 import './Login.css'; // Importa o CSS específico para esta página
 
@@ -58,7 +58,7 @@ const Login = () => {
           </div>
           <button type="button" onClick={onSubmit}>Entrar</button>
           <div className="signup-link">
-            <p>Não tem uma conta? <a href="#">Registrar</a></p>
+            <p>Não tem uma conta? <Link to="/register">Registrar</Link></p>
           </div>
         </form>
       </div>

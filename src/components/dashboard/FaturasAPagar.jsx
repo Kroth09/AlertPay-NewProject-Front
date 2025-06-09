@@ -1,19 +1,16 @@
-// Arquivo: src/components/dashboard/FaturasAPagar.jsx (VERSÃO COM CSS PURO)
+// Arquivo: src/components/dashboard/FaturasAPagar.jsx (VERSÃO FINAL E FUNCIONAL)
 
-import React, { useState } from 'react';
-import { FaExclamationCircle, FaEllipsisV } from 'react-icons/fa';
+import React from 'react';
+// Trocamos FaEllipsisV por FaCheck para o novo botão
+import { FaExclamationCircle, FaCheck } from 'react-icons/fa';
 
-// Os dados mocados continuam os mesmos
-const mockFaturas = [
-  { id: 1, descricao: 'Fatura de Energia - RGE', valor: 245.80, vencimento: '2025-06-02', status: 'Atrasada' },
-  { id: 2, descricao: 'Plano de Internet - FibraOnline', valor: 119.90, vencimento: '2025-06-15', status: 'A vencer' },
-  { id: 3, descricao: 'Mensalidade da Academia', valor: 89.00, vencimento: '2025-06-20', status: 'A vencer' },
-  { id: 4, descricao: 'Assinatura Netflix', valor: 39.90, vencimento: '2025-07-01', status: 'A vencer' }
-];
+// 1. A constante mockFaturas e o useState foram REMOVIDOS daqui.
+//    Este componente agora não tem mais seus próprios dados.
 
-function FaturasAPagar() {
-  const [faturas, _setFaturas] = useState(mockFaturas);
+// 2. O componente agora aceita 'faturas' e 'onMarcarComoPaga' como "props" (parâmetros)
+function FaturasAPagar({ faturas, onMarcarComoPaga }) {
 
+  // As funções de formatação continuam aqui, sem alterações.
   const formatarData = (data) => {
     return new Date(data).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
   };
@@ -24,6 +21,11 @@ function FaturasAPagar() {
 
   return (
     <div className="faturas-list">
+      {/* Adicionamos uma mensagem para quando a lista estiver vazia */}
+      {faturas.length === 0 && (
+        <p className="nenhuma-fatura-msg">Nenhuma fatura a pagar no momento. Ótimo trabalho!</p>
+      )}
+
       {faturas.map((fatura) => (
         <div key={fatura.id} className="fatura-item">
           
@@ -44,8 +46,13 @@ function FaturasAPagar() {
             
             <p className="fatura-valor">{formatarValor(fatura.valor)}</p>
             
-            <button className="fatura-actions-btn">
-              <FaEllipsisV />
+            {/* 3. BOTÃO MODIFICADO: Ícone de Check e o onClick que chama a função do pai */}
+            <button 
+              className="fatura-actions-btn btn-pagar"
+              title="Marcar como Paga"
+              onClick={() => onMarcarComoPaga(fatura.id)}
+            >
+              <FaCheck />
             </button>
           </div>
         </div>

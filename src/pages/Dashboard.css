@@ -209,3 +209,14 @@
     display: none;
   }
 }
+
+.btn-pagar:hover {
+  background-color: #dcfce7; /* Fundo verde bem claro no hover */
+  color: #16a34a; /* Ícone fica verde */
+}
+
+.nenhuma-fatura-msg {
+  color: #64748b; /* Cor cinza para a mensagem */
+  text-align: center;
+  padding: 1rem 0;
+}

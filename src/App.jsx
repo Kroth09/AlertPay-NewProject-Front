@@ -3,7 +3,8 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import StoreContext from './Store/context';
 import ProtectedRoute from './components/ProtectedRoutes'; 
 import Login from './pages/Login';                     
-import Dashboard from './pages/Dashboard';               
+import Dashboard from './pages/Dashboard';  
+import Register from './pages/Register';             
 //import './App.css'; 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
     <Routes>
       {/* Rotas Públicas */}
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/" element={<Login />} />
 
       {/* Rotas Protegidas aninhadas dentro do ProtectedRoute */}

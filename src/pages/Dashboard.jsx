@@ -1,17 +1,40 @@
-// Arquivo: pages/Dashboard.jsx (VERSÃO COM LAYOUT CORRIGIDO)
+// Arquivo: pages/Dashboard.jsx (VERSÃO FINAL E CORRIGIDA)
+
+import React, { useState } from 'react';
 import FaturasAPagar from '../components/dashboard/FaturasAPagar';
 import { FaPlus, FaFileInvoiceDollar, FaCheckCircle, FaCalendarAlt } from 'react-icons/fa';
 import './Dashboard.css';
 import FaturasPagas from '../components/dashboard/FaturasPagas';
 import CalendarioFaturas from '../components/dashboard/CalendarioFaturas';
 
+const mockFaturas = [
+  { id: 1, descricao: 'Fatura de Energia - RGE', valor: 245.80, vencimento: '2025-06-02', status: 'Atrasada' },
+  { id: 2, descricao: 'Plano de Internet - FibraOnline', valor: 119.90, vencimento: '2025-06-15', status: 'A vencer' },
+  { id: 3, descricao: 'Mensalidade da Academia', valor: 89.00, vencimento: '2025-06-20', status: 'A vencer' },
+  { id: 4, descricao: 'Assinatura Netflix', valor: 39.90, vencimento: '2025-07-01', status: 'A vencer' },
+  { id: 5, descricao: 'Compra Online - Amazon', valor: 189.99, vencimento: '2025-05-28', status: 'Paga' },
+  { id: 6, descricao: 'Aluguel do Mês', valor: 1500.00, vencimento: '2025-05-05', status: 'Paga' },
+];
 
 function Dashboard({ onLogout }) {
+  const [todasAsFaturas, setTodasAsFaturas] = useState(mockFaturas);
 
   const handleNovaFatura = () => {
     alert('Funcionalidade de adicionar nova fatura a ser implementada!');
   };
 
+  function _marcarComoPaga(faturaId) {
+    const faturasAtualizadas = todasAsFaturas.map(fatura => {
+      if (fatura.id === faturaId) {
+        return { ...fatura, status: 'Paga' };
+      }
+      return fatura;
+    });
+    setTodasAsFaturas(faturasAtualizadas);
+  }
+
+  const _faturasAPagar = todasAsFaturas.filter(f => f.status !== 'Paga');
+  const _faturasPagas = todasAsFaturas.filter(f => f.status === 'Paga');
 
   return (
     <div className="dashboard-page">
@@ -32,46 +55,49 @@ function Dashboard({ onLogout }) {
         </div>
       </header>
 
-      {/* A MUDANÇA PRINCIPAL ACONTECE AQUI NO MAIN */}
       <main className="dashboard-main">
         <div className="dashboard-grid">
-          {/* Card 1 com sua classe específica */}
+          
           <section className="dashboard-card card-faturas-a-pagar">
             <div className="card-header">
               <FaFileInvoiceDollar className="card-header-icon icon-blue" />
               <h2>Faturas a Pagar</h2>
             </div>
             <div className="card-body">
-              <FaturasAPagar />
+              {/* CORREÇÃO AQUI: Passando os dados e a função como props */}
+              <FaturasAPagar 
+                faturas={_faturasAPagar} 
+                onMarcarComoPaga={_marcarComoPaga} 
+              />
             </div>
           </section>
 
-          {/* Card 2 com sua classe específica */}
           <section className="dashboard-card card-faturas-pagas">
             <div className="card-header">
               <FaCheckCircle className="card-header-icon icon-green" />
               <h2>Faturas Pagas</h2>
             </div>
             <div className="card-body">
-              <FaturasPagas />
+              {/* CORREÇÃO AQUI: Passando os dados como props */}
+              <FaturasPagas faturas={_faturasPagas} />
             </div>
           </section>
-
-          {/* Card 3 (Calendário) com sua classe específica */}
+          
           <section className="dashboard-card card-calendario">
             <div className="card-header">
               <FaCalendarAlt className="card-header-icon icon-indigo" />
               <h2>Calendário</h2>
             </div>
             <div className="card-body">
-              <CalendarioFaturas />
+              {/* CORREÇÃO AQUI: Passando os dados como props */}
+              <CalendarioFaturas faturas={todasAsFaturas} />
             </div>
           </section>
+
         </div>
       </main>
     </div>
   );
 }
-
 
 export default Dashboard;
