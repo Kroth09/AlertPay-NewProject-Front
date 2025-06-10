@@ -274,3 +274,219 @@
   border-top: 1px solid #404040;
   padding-top: 1.5rem;
 }
+
+.btn-tertiary {
+  background-color: #3b82f6; /* Um tom de azul */
+  color: white;
+}
+
+.btn-tertiary:hover {
+  background-color: #2563eb;
+}
+
+/* --- Estilos para a Página de Login com Banco --- */
+
+.form-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Grid para seleção de bancos */
+.bank-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+  gap: 1.5rem;
+}
+
+.bank-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem 1rem;
+  background-color: #404040;
+  border: 1px solid #535353;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.bank-card:hover {
+  transform: translateY(-5px);
+  border-color: #1DB954;
+  background-color: #484848;
+}
+
+.bank-card-icon {
+  font-size: 2.5rem; /* Ícone grande */
+  color: #a0a0a0;
+}
+
+.bank-card-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Cabeçalho do formulário após selecionar o banco */
+.selected-bank-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.selected-bank-header .bank-icon {
+  font-size: 1.25rem;
+  margin-right: 0.75rem;
+  color: #a0a0a0;
+}
+
+.back-button {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+.back-button:hover {
+  color: #ffffff;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon svg {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #a0a0a0;
+}
+
+.input-with-icon .form-input {
+  padding-left: 3rem; 
+}
+
+.icon-orange { color: #f97316; } 
+.icon-red    { color: #ef4444; } 
+.icon-blue   { color: #3b82f6; } 
+.icon-purple { color: #8b5cf6; } 
+
+.input-with-icon .form-input {
+  padding-left: 3rem;  
+  padding-right: 3rem; 
+}
+
+
+.password-toggle-btn {
+  position: absolute;
+  right: 2rem; 
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex; 
+  align-items: center;
+}
+
+.password-toggle-btn:hover {
+  color: #ffffff;
+}
+/* src/pages/Dashboard.css (ou onde for mais apropriado) */
+
+/* ... (seu CSS existente para .error-message) ... */
+
+.success-message {
+  color: #5cb85c; /* Um tom de verde para sucesso */
+  background-color: rgba(92, 184, 92, 0.1); /* Um fundo levemente colorido */
+  border: 1px solid #4cae4c;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* Opcional: para o .error-message, você já deve ter algo assim */
+.error-message {
+  color: #d9534f; /* Um tom de vermelho para erro */
+  background-color: rgba(217, 83, 79, 0.1);
+  border: 1px solid #d43f3a;
+  padding: 8px 15px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* src/pages/Dashboard.css */
+
+/* ... (seus estilos existentes para .dashboard-header, .header-actions, .btn, etc.) ... */
+
+/* Estilos para o container do filtro de banco */
+.bank-filter-container {
+  display: flex; /* Para alinhar o label e o select */
+  align-items: center;
+  gap: 5px; /* Espaçamento entre o label e o select */
+}
+
+.bank-filter-label {
+  color: #fff; /* Cor do texto "Ver:" */
+  font-size: 0.95em;
+  white-space: nowrap; /* Evita que o label quebre a linha */
+}
+
+/* Estilos para o select personalizado */
+.custom-select-dashboard {
+  /* Propriedades básicas de tamanho e borda */
+  padding: 8px 12px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
+  color: #fff; /* Cor do texto selecionado */
+  font-size: 0.95em;
+  outline: none; /* Remove a borda de foco padrão */
+  cursor: pointer;
+  
+  /* Remover a seta padrão do navegador (opcional, para estilizar uma seta customizada) */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  /* Adicionar uma seta customizada (usando um gradiente de fundo) */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M287%2C197.9c-3.2%2C3.2-7.5%2C5.1-12.1%2C5.1s-8.9-1.9-12.1-5.1L146.2%2C77.4L32.4%2C197.9c-3.2%2C3.2-7.5%2C5.1-12.1%2C5.1s-8.9-1.9-12.1-5.1c-6.6-6.6-6.6-17.4%2C0-24l133.5-133.5c3.2-3.2%2C7.5-5.1%2C12.1-5.1s8.9%2C1.9%2C12.1%2C5.1l133.5%2C133.5C293.7%2C180.5%2C293.7%2C191.3%2C287%2C197.9z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px top 50%;
+  background-size: 0.6em auto;
+  padding-right: 30px; /* Garante espaço para a seta */
+}
+
+.custom-select-dashboard:hover {
+  border-color: rgba(255, 255, 255, 0.5); /* Borda mais visível ao passar o mouse */
+}
+
+.custom-select-dashboard:focus {
+  border-color: #007bff; /* Cor de foco azul */
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Sombra de foco */
+}
+
+/* Estilo para as opções dentro do select (limitado por navegador) */
+.custom-select-dashboard option {
+  background-color: #2c3e50; /* Fundo escuro para as opções */
+  color: #fff; /* Texto branco para as opções */
+}

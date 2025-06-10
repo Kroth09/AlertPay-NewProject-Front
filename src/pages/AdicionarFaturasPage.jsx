@@ -1,44 +1,59 @@
-// src/pages/AdicionarFaturaPage.jsx (VERSÃO 100% CSS PURO)
+// src/pages/AdicionarFaturaPage.jsx
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Dashboard.css'; // Usando nosso arquivo de CSS puro
+import './Dashboard.css';
+import { addInvoice } from '../services/api';
 
 const AdicionarFaturaPage = () => {
   const navigate = useNavigate();
   const [descricao, setDescricao] = useState('');
   const [valor, setValor] = useState('');
   const [vencimento, setVencimento] = useState('');
-  const [status, setStatus] = useState('A vencer');
+  const [error, setError] = useState('');
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
+
     const novaFatura = {
-      id: Date.now(),
-      descricao,
-      valor: parseFloat(valor),
-      vencimento,
-      status,
+      description: descricao,
+      amount: parseFloat(valor),
+      due_date: vencimento,
+      origin: "Manual",
     };
-    console.log("Nova fatura criada:", novaFatura);
-    alert('Fatura criada com sucesso!');
-    navigate('/dashboard');
+
+    try {
+      const response = await addInvoice(novaFatura);
+      if (response && response.id) {
+        alert('Fatura criada com sucesso!');
+        navigate('/dashboard', { state: { newInvoiceAdded: true } });
+      } else {
+        setError(response.error || "Erro desconhecido ao adicionar fatura.");
+      }
+    } catch (err) {
+      setError("Falha ao conectar com o servidor ou erro ao adicionar fatura.");
+      console.error("Add invoice error:", err);
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      }
+    }
   };
 
   return (
     <div className="dashboard-page">
-        <header className="dashboard-header">
+      <header className="dashboard-header">
         <div className="header-content">
-        <div className="header-title">
-          <h1>Adicionar Nova Fatura</h1>
+          <div className="header-title">
+            <h1>Adicionar Nova Fatura</h1>
           </div>
-         </div>
-</header>
+        </div>
+      </header>
       <main className="dashboard-main" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="dashboard-card" style={{ maxWidth: '600px', width: '100%' }}>
           <div className="card-body">
             <form onSubmit={handleSubmit}>
-              
+
               <div className="form-group">
                 <label htmlFor="descricao" className="form-label">Descrição</label>
                 <input
@@ -78,32 +93,18 @@ const AdicionarFaturaPage = () => {
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="status" className="form-label">Status</label>
-                <select
-                  id="status"
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                  className="form-select"
-                  required
-                >
-                  <option value="A vencer">A vencer</option>
-                  <option value="Atrasada">Atrasada</option>
-                  <option value="Paga">Paga</option>
-                </select>
-              </div>
-
+              {error && <p className="error-message" style={{ color: 'red', textAlign: 'center', marginBottom: '10px' }}>{error}</p>}
               <div className="form-actions">
                 <button
                   type="button"
                   onClick={() => navigate('/dashboard')}
-                  className="btn btn-secondary" // Reutilizando a classe de botão secundário
+                  className="btn btn-secondary"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="btn btn-primary" // Reutilizando a classe de botão primário
+                  className="btn btn-primary"
                 >
                   Salvar Fatura
                 </button>

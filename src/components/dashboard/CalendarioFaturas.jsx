@@ -7,7 +7,7 @@ import getDay from 'date-fns/getDay';
 import ptBR from 'date-fns/locale/pt-BR';
 
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import './Calendario.css'; // Nosso CSS personalizado para ajustar o visual
+import './Calendario.css';
 
 const mockFaturas = [
   { id: 1, descricao: 'Energia', valor: 245.80, vencimento: '2025-06-02', status: 'Atrasada' },
@@ -17,7 +17,6 @@ const mockFaturas = [
   { id: 6, descricao: 'Aluguel', valor: 1500.00, vencimento: '2025-06-05', status: 'Paga' },
 ];
 
-// Configuração para o calendário entender o formato de data e o idioma
 const locales = {
   'pt-BR': ptBR,
 };
@@ -29,7 +28,6 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-// Mensagens traduzidas para o português
 const messages = {
   allDay: 'Dia todo',
   previous: 'Anterior',
@@ -46,33 +44,29 @@ const messages = {
   showMore: total => `+ Ver mais (${total})`
 };
 
-// Transforma nossas faturas em 'eventos' para o calendário
 const eventosFaturas = mockFaturas.map(fatura => {
   const dataVencimento = new Date(fatura.vencimento);
-  // Adiciona 1 dia para corrigir problemas de fuso horário que podem fazer o evento aparecer um dia antes
   dataVencimento.setMinutes(dataVencimento.getMinutes() + dataVencimento.getTimezoneOffset());
 
   return {
     title: `${fatura.descricao} - R$${fatura.valor.toFixed(2)}`,
     start: dataVencimento,
-    end: dataVencimento, // Para eventos de um dia, start e end são iguais
+    end: dataVencimento,
     allDay: true,
-    resource: fatura, // Guardamos a fatura original no evento
+    resource: fatura,
   };
 });
 
 
 const eventStyleGetter = (event) => {
-  // Define a cor de fundo com base no status da fatura
-  let backgroundColor = '#3b82f6'; // Azul padrão (A vencer)
+  let backgroundColor = '#3b82f6';
   if (event.resource.status === 'Paga') {
-    backgroundColor = '#22c55e'; // Verde
+    backgroundColor = '#22c55e';
   }
   if (event.resource.status === 'Atrasada') {
-    backgroundColor = '#ef4444'; // Vermelho
+    backgroundColor = '#ef4444';
   }
 
-  // Monta o objeto de estilo que será aplicado ao evento
   const style = {
     backgroundColor,
     borderRadius: '5px',
@@ -89,7 +83,6 @@ const eventStyleGetter = (event) => {
 
 function CalendarioFaturas() {
   return (
-    // O container precisa de uma altura definida para o calendário aparecer
     <div style={{ height: '600px' }}>
       <Calendar
         localizer={localizer}
@@ -98,7 +91,7 @@ function CalendarioFaturas() {
         endAccessor="end"
         messages={messages}
         culture='pt-BR'
-        eventPropGetter={eventStyleGetter} // Aplica nosso estilo customizado aos eventos
+        eventPropGetter={eventStyleGetter}
       />
     </div>
   );

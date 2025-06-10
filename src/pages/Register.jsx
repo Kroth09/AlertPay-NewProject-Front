@@ -1,79 +1,123 @@
+// src/pages/Register.jsx
 import React, { useState } from 'react';
-import { FaUser, FaLock, FaEnvelope } from 'react-icons/fa';
+import { FaUser, FaLock, FaEnvelope, FaEye, FaEyeSlash, FaIdCard } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
+import { registerUser } from '../services/api';
 
 const Register = () => {
-  // ... (toda a sua lógica de state e handleSubmit permanece igual) ...
+  const [cpf, setCpf] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setError('');
     if (password !== confirmPassword) {
-      alert("As senhas não coincidem!");
+      setError("As senhas não coincidem!");
       return;
     }
-    console.log("Enviando dados de registro para a API:", { name, email, password });
-    alert('Conta criada com sucesso! Você será redirecionado para o login.');
-    navigate('/login');
+
+    try {
+      const response = await registerUser({ cpf, name, email, password });
+
+      if (response && (response.cpf || response.email)) {
+        alert('Conta criada com sucesso! Você será redirecionado para o login.');
+        navigate('/login');
+      } else {
+        setError(response.error || "Erro desconhecido ao registrar. Formato de resposta inesperado.");
+      }
+    } catch (err) {
+      setError("Falha ao conectar com o servidor ou erro no registro. Verifique a URL do backend e CORS.");
+      console.error("Registration error:", err);
+      if (err.response && err.response.data && err.response.data.message) {
+        setError(err.response.data.message);
+      }
+    }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   return (
-    // Adicione este wrapper para centralizar o conteúdo
-    <div className='login-page-wrapper'> 
-      {/* Altere a classe aqui de 'container' para 'login-container' */}
-      <div className='login-container'> 
+    <div className='login-page-wrapper'>
+      <div className='login-container'>
         <form onSubmit={handleSubmit}>
           <h1>Crie sua Conta</h1>
-          {/* O resto do seu formulário permanece exatamente igual */}
           <div className='input-field'>
-            <input 
-              type="text" 
+            <input
+              type="text"
+              placeholder='CPF (apenas números)'
+              value={cpf}
+              onChange={(e) => setCpf(e.target.value)}
+              maxLength="11"
+              required
+            />
+            <FaIdCard className='icon' />
+          </div>
+          <div className='input-field'>
+            <input
+              type="text"
               placeholder='Nome completo'
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
-            <FaUser className='icon'/>
+            <FaUser className='icon' />
           </div>
           <div className='input-field'>
-            <input 
-              type="email" 
+            <input
+              type="email"
               placeholder='E-mail'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <FaEnvelope className='icon'/>
+            <FaEnvelope className='icon' />
           </div>
           <div className='input-field'>
-            <input 
-              type="password" 
+            <input
+              type={showPassword ? 'text' : 'password'}
               placeholder='Senha'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-            /> 
-            <FaLock className='icon'/>
+            />
+            {showPassword ? (
+              <FaEyeSlash className='icon password-toggle' onClick={togglePasswordVisibility} />
+            ) : (
+              <FaEye className='icon password-toggle' onClick={togglePasswordVisibility} />
+            )}
+            <FaLock className='icon' style={{ zIndex: 1 }} />
           </div>
           <div className='input-field'>
-            <input 
-              type="password" 
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
               placeholder='Confirme sua senha'
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-            /> 
-            <FaLock className='icon'/>
+            />
+            {showConfirmPassword ? (
+              <FaEyeSlash className='icon password-toggle' onClick={toggleConfirmPasswordVisibility} />
+            ) : (
+              <FaEye className='icon password-toggle' onClick={toggleConfirmPasswordVisibility} />
+            )}
+            <FaLock className='icon' style={{ zIndex: 1 }} />
           </div>
-          
+          {error && <p className="error-message" style={{ color: 'red', textAlign: 'center', marginBottom: '10px' }}>{error}</p>}
           <button type="submit">Registrar</button>
-
           <div className="signup-link">
             <p>Já tem uma conta? <Link to="/login">Faça Login</Link></p>
           </div>

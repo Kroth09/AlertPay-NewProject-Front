@@ -1,20 +1,13 @@
-// Arquivo: src/components/dashboard/FaturasAPagar.jsx (VERSÃO FINAL E FUNCIONAL)
 
 import React from 'react';
-// Trocamos FaEllipsisV por FaCheck para o novo botão
 import { FaExclamationCircle, FaCheck } from 'react-icons/fa';
 
-// 1. A constante mockFaturas e o useState foram REMOVIDOS daqui.
-//    Este componente agora não tem mais seus próprios dados.
-
-// 2. O componente agora aceita 'faturas' e 'onMarcarComoPaga' como "props" (parâmetros)
 function FaturasAPagar({ faturas, onMarcarComoPaga }) {
 
-  // As funções de formatação continuam aqui, sem alterações.
   const formatarData = (data) => {
     return new Date(data).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
   };
-  
+
   const formatarValor = (valor) => {
     return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
   }
@@ -28,7 +21,7 @@ function FaturasAPagar({ faturas, onMarcarComoPaga }) {
 
       {faturas.map((fatura) => (
         <div key={fatura.id} className="fatura-item">
-          
+
           <div className="fatura-info">
             <p className="fatura-descricao">{fatura.descricao}</p>
             <p className="fatura-vencimento">
@@ -43,11 +36,11 @@ function FaturasAPagar({ faturas, onMarcarComoPaga }) {
                 <span>{fatura.status}</span>
               </div>
             )}
-            
+
             <p className="fatura-valor">{formatarValor(fatura.valor)}</p>
-            
+
             {/* 3. BOTÃO MODIFICADO: Ícone de Check e o onClick que chama a função do pai */}
-            <button 
+            <button
               className="fatura-actions-btn btn-pagar"
               title="Marcar como Paga"
               onClick={() => onMarcarComoPaga(fatura.id)}
