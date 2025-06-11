@@ -12,7 +12,7 @@ const INITIAL_FILTER_OPTIONS = [
   { id: 'manual', name: 'Faturas Manuais' },
 ];
 const ALL_POSSIBLE_BANKS = [
-  { id: 'APImini-bc', name: 'Banco Kroth' },
+  { id: 'api-mini-bc', name: 'Banco Kroth' },
   { id: 'banco-central', name: 'Banco Kaiser' },
   { id: 'bank-account-api', name: 'Banco Biancon' },
   { id: 'mini-banco-central', name: 'Banco Lima' },
