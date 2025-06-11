@@ -113,65 +113,116 @@
 }
 .fatura-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column; /* Fatura-item é uma coluna de linhas */
   padding: 1rem;
   background-color: #404040;
   border-radius: 8px;
   border: 1px solid #535353;
-  cursor: pointer;
+  cursor: pointer; /* Mantido cursor para manter consistência, mas para pagas pode ser 'default' */
   transition: background-color 0.2s, border-color 0.2s;
 }
 .fatura-item:hover {
   border-color: #1DB954;
   background-color: #484848;
 }
-.fatura-info {
+
+/* << AJUSTADO: Estilos para a linha superior da fatura (apenas descrição) >> */
+.fatura-item-top-row {
+  display: flex;
+  justify-content: flex-start; /* Alinha a descrição à esquerda */
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0.5rem; /* Espaço entre a linha superior e inferior */
+}
+
+/* << AJUSTADO: Estilos para a linha inferior da fatura (valor e botão paga) >> */
+.fatura-item-bottom-row {
+  display: flex;
+  justify-content: flex-end; /* Alinha valor e botão à direita */
+  align-items: center; /* Alinha verticalmente valor e botão */
+  width: 100%;
+  gap: 1rem; /* Espaço entre o valor e o botão */
+}
+
+.fatura-info { /* Mantido para o contexto da descrição */
   flex-grow: 1;
+  flex-shrink: 1;
   min-width: 0;
 }
 .fatura-descricao {
   font-weight: 700;
   color: #ffffff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal; /* << AJUSTADO: Permite quebra de linha >> */
+  overflow: visible; /* << AJUSTADO: Conteúdo visível, não mais oculto >> */
+  text-overflow: clip; /* << AJUSTADO: Remove ellipsis >> */
+  font-size: 1.1em;
+  margin-bottom: 0;
 }
-.fatura-vencimento {
+.fatura-descricao-paga {
+    text-decoration: line-through;
+    color: #a0a0a0;
+}
+
+.fatura-vencimento { /* Mantido para FaturasAPagar ou futuro */
   font-size: 0.875rem;
   color: #a0a0a0;
 }
-.fatura-details {
+/* .fatura-details foi removido do JSX de FaturasPagas, então este CSS não é mais usado para ele. */
+.fatura-details { 
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
-.fatura-status, .status-paga {
+.fatura-status, .status-paga { /* Mantido para FaturasAPagar */
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
   font-size: 0.875rem;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .status-atrasada {
   color: #f87171;
 }
+/* .status-paga (este será sobrescrito pelo .status-paga-btn para o botão) */
 .status-paga {
-  color: #22c55e;
+    color: #22c55e;
 }
-.fatura-paga-item .fatura-descricao {
-  text-decoration: line-through;
-  color: #a0a0a0; /* Corrigido para ser legível no fundo escuro */
+
+/* Estilos para o Botão 'Paga' (novo lugar e função) */
+.status-paga-btn {
+  background-color: #1ed760; /* Fundo verde do botão */
+  color: #0d8100; /* << AJUSTADO: Cor do texto 'Paga' agora é verde escuro >> */
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: default;
+  opacity: 0.9;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
+
+.status-paga-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Removemos a necessidade de fatura-valor ter um min-width pois ele está em flex-end agora */
 .fatura-valor {
   font-weight: 700;
   font-size: 1.125rem;
   color: #ffffff;
-  min-width: 120px;
-  text-align: right;
+  /* min-width: 90px; REMOVIDO: Não é mais necessário para este layout */
+  text-align: right; /* Mantido alinhamento à direita para o valor */
+  flex-shrink: 0;
 }
-.fatura-actions-btn {
+.fatura-actions-btn { /* Agora, primariamente para FaturasAPagar */
   background: none;
   border: none;
   color: #a0a0a0;
@@ -179,12 +230,12 @@
   padding: 0.5rem;
   border-radius: 50%;
   transition: color 0.2s, background-color 0.2s;
+  flex-shrink: 0;
 }
 .fatura-actions-btn:hover {
   color: #ffffff;
   background-color: #535353;
 }
-
 
 /* --- Media Queries --- */
 @media (min-width: 1024px) {
@@ -205,8 +256,27 @@
 }
 
 @media (max-width: 640px) {
+  .fatura-item {
+    flex-wrap: wrap; /* Permite que os itens quebrem a linha */
+  }
+  .fatura-info {
+    width: 100%; /* Ocupa a largura total na primeira linha */
+    margin-right: 0;
+    margin-bottom: 0.5rem; /* Espaço abaixo da descrição */
+  }
+  .fatura-details {
+    width: 100%; /* Ocupa a largura total na segunda linha */
+    justify-content: space-between; /* Distribui os itens na segunda linha */
+  }
+  /* Remove a exibição do status em telas muito pequenas */
   .fatura-status, .status-paga {
-    display: none;
+    /* display: none; */ /* Decida se quer esconder ou apenas ajustar */
+    font-size: 0.8rem; /* Ajusta o tamanho da fonte */
+    gap: 0.2rem;
+  }
+  .fatura-valor {
+    min-width: auto; /* Permite que o valor ajuste a largura */
+    font-size: 1rem;
   }
 }
 
@@ -489,4 +559,154 @@
 .custom-select-dashboard option {
   background-color: #2c3e50; /* Fundo escuro para as opções */
   color: #fff; /* Texto branco para as opções */
+}
+
+.rbc-calendar {
+  position: relative;
+  z-index: 1; /* Garante que o calendário crie um contexto de empilhamento para overlays */
+  background-color: #ffffff; /* << Fundo CLARO principal do calendário >> */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.2);
+  color: #333333; /* Cor padrão do texto no calendário (escuro) */
+  font-family: 'Inter', sans-serif;
+  pointer-events: auto; /* << NOVO: Garante que o calendário seja clicável >> */
+}
+
+/* Modais e popups (o "Ver mais" e popups de eventos) */
+.rbc-overlay,
+.rbc-event-popup {
+  z-index: 99999; /* << Z-INDEX MUITO ALTO: Garante que apareça acima de tudo >> */
+  background-color: #ffffff; /* << Fundo CLARO para o modal >> */
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px 0 rgb(0 0 0 / 0.3); /* Sombra para o modal */
+  padding: 15px;
+  color: #333333; /* << Cor do texto CLARO para o modal >> */
+  pointer-events: auto; /* << NOVO: Garante que o popup seja clicável >> */
+}
+
+/* Cabeçalho do popup (onde mostra o dia/data do modal "Ver mais") */
+.rbc-event-popup .rbc-popup-header {
+    color: #333333; /* Texto escuro */
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+/* Estilos para os eventos listados dentro do popup "Ver mais" */
+.rbc-event-popup .rbc-row-segment,
+.rbc-event-popup .rbc-show-more,
+.rbc-event-popup .rbc-event-label,
+.rbc-event-popup .rbc-event-content {
+    font-size: 0.9em;
+    color: #666666; /* Texto um pouco mais claro */
+}
+/* Corrigir a cor do evento dentro do popup para que não fique branco no fundo claro padrão do evento */
+.rbc-event-popup .rbc-event {
+    color: #ffffff; /* Texto branco para o evento em si (que tem fundo colorido) */
+    opacity: 1;
+}
+
+
+/* Barra de ferramentas do calendário (Hoje, Anterior, Próximo, Mês, Semana, etc.) */
+.rbc-toolbar {
+  padding: 10px 20px;
+  border-bottom: 1px solid #e0e0e0;
+  background-color: #ffffff; /* Fundo CLARO da barra de ferramentas */
+  color: #333333; /* Cor padrão do texto na barra de ferramentas */
+  pointer-events: auto; /* << NOVO: Garante que a toolbar seja clicável >> */
+}
+.rbc-toolbar .rbc-btn-group button {
+  border: 1px solid #cccccc; /* Borda dos botões */
+  color: #333333; /* Cor do texto dos botões */
+  background-color: #f0f0f0; /* Fundo CLARO dos botões */
+  padding: 6px 12px;
+  transition: background-color 0.2s, border-color 0.2s;
+  cursor: pointer;
+  border-radius: 4px;
+  pointer-events: auto !important; /* << NOVO: Garante que os botões sejam clicáveis, mesmo com outras regras >> */
+}
+.rbc-toolbar .rbc-btn-group button:hover {
+  background-color: #e0e0e0;
+  border-color: #bbbbbb;
+  pointer-events: auto !important; /* << NOVO: Garante que os botões sejam clicáveis, mesmo com outras regras >> */
+}
+.rbc-toolbar .rbc-btn-group button.rbc-active {
+  background-color: #3b82f6; /* Cor de fundo para o botão ativo (azul) */
+  color: white;
+  border-color: #3b82f6;
+  pointer-events: auto !important; /* << NOVO: Garante que os botões sejam clicáveis, mesmo com outras regras >> */
+}
+.rbc-toolbar .rbc-btn-group a { /* Se os botões forem links (<a>) */
+  pointer-events: auto !important; /* << NOVO: Para links na toolbar >> */
+}
+.rbc-toolbar .rbc-toolbar-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333333; /* Cor do texto do título (mês/ano) */
+}
+
+
+/* Cabeçalhos de dias da semana (Dom, Seg, etc.) */
+.rbc-header {
+  color: #666666; /* Cor dos nomes dos dias da semana (mais escuro) */
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px 0;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9em;
+}
+
+/* Estilos para as células de dia (os "blocos" do calendário) */
+.rbc-day-bg {
+  background-color: #ffffff; /* Fundo CLARO padrão dos dias do calendário */
+  border: 1px solid #e0e0e0; /* Borda entre os dias (clara) */
+}
+/* Borda para as células individuais (grid) */
+.rbc-month-view .rbc-row-bg + .rbc-row-bg {
+    border-top: 1px solid #e0e0e0; /* Borda entre as semanas */
+}
+.rbc-month-view .rbc-row-content .rbc-row-segment + .rbc-row-segment {
+    border-left: 1px solid #e0e0e0; /* Borda vertical entre os dias */
+}
+
+/* Dia atual */
+.rbc-today {
+  background-color: #e6f7ff; /* Fundo azul claro para o dia atual */
+}
+
+/* Dias de outros meses (que aparecem no mês atual) */
+.rbc-off-range-bg {
+  background-color: #f9f9f9; /* Fundo muito claro para dias fora do mês atual */
+}
+
+/* Números dos dias */
+.rbc-date-cell {
+  color: #333333; /* Cor dos números dos dias (escuro) */
+  padding: 8px;
+  font-weight: 500;
+  text-align: right;
+}
+/* Números dos dias fora do mês */
+.rbc-off-range-bg .rbc-date-cell {
+    color: #a0a0a0; /* Cor mais clara para números de dias fora do mês */
+}
+
+/* Estilos para os próprios eventos (dentro das células) */
+.rbc-event {
+  padding: 4px 8px;
+  border: none !important;
+  border-radius: 5px;
+  opacity: 0.9;
+  color: #ffffff; /* Cor do texto dos eventos (já definida no eventStyleGetter, mas para fallback) */
+  font-size: 0.85em;
+  font-weight: 500;
+}
+.rbc-event:focus {
+    outline: none;
+}
+/* Cor da linha indicadora de tempo atual (no dia/semana) */
+.rbc-current-time-indicator {
+    background-color: #e74c3c; /* Vermelho vibrante */
 }

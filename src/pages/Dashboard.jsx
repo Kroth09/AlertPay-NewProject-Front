@@ -153,13 +153,19 @@ function Dashboard({ onLogout }) {
 
   async function marcarComoPaga(faturaId) {
     try {
+      // Atualiza localmente (experiência rápida)
       const updatedTodasFaturas = todasAsFaturas.map(fatura =>
         fatura.id === faturaId ? { ...fatura, status: 'Paga' } : fatura
       );
       setTodasAsFaturas(updatedTodasFaturas);
 
+      // Atualiza no backend
       await updateInvoice(faturaId, { status: 'Paga' });
+
       alert('Fatura marcada como paga com sucesso!');
+
+      // Refetch para garantir sincronização
+      fetchAndAggregateInvoices(false);
 
     } catch (error) {
       console.error("Erro ao marcar fatura como paga:", error);

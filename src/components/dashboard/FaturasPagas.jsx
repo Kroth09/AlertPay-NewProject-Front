@@ -1,12 +1,9 @@
+// Arquivo: src/components/dashboard/FaturasPagas.jsx
+
 import React from 'react';
 import { FaCheckCircle, FaEllipsisV } from 'react-icons/fa';
 
 function FaturasPagas({ faturas }) {
-
-  const formatarData = (data) => {
-    return new Date(data).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-  };
-
   const formatarValor = (valor) => {
     return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
   }
@@ -20,24 +17,24 @@ function FaturasPagas({ faturas }) {
       {faturas.map((fatura) => (
         <div key={fatura.id} className="fatura-item fatura-paga-item">
 
-          <div className="fatura-info">
-            <p className="fatura-descricao">{fatura.descricao}</p>
-            {/* << MODIFICAÇÃO AQUI: REMOVIDA A LINHA DA DATA DE PAGAMENTO >> */}
-            {/* <p className="fatura-vencimento">
-              Pago em: {fatura.pagamento ? formatarData(fatura.pagamento) : 'Data Indisponível'}
-            </p> */}
+          {/* << MODIFICAÇÃO: Linha Superior (APENAS Descrição) >> */}
+          <div className="fatura-item-top-row">
+            <div className="fatura-info">
+              <p className="fatura-descricao fatura-descricao-paga">{fatura.descricao}</p>
+            </div>
+            {/* O valor foi movido para a linha de baixo */}
           </div>
 
-          <div className="fatura-details">
-            <div className="status-paga">
+          {/* << MODIFICAÇÃO: Linha Inferior (Valor e Botão Paga) >> */}
+          <div className="fatura-item-bottom-row">
+            <p className="fatura-valor">{formatarValor(fatura.valor)}</p> {/* << VALOR AQUI >> */}
+            <button
+              className="fatura-actions-btn status-paga-btn"
+              title="Fatura Paga"
+              disabled
+            >
               <FaCheckCircle />
-              <span>{fatura.status}</span>
-            </div>
-
-            <p className="fatura-valor">{formatarValor(fatura.valor)}</p>
-
-            <button className="fatura-actions-btn">
-              <FaEllipsisV />
+              <span>Paga</span>
             </button>
           </div>
         </div>

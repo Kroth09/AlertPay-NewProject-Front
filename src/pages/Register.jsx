@@ -1,6 +1,6 @@
 // src/pages/Register.jsx
 import React, { useState } from 'react';
-import { FaUser, FaLock, FaEnvelope, FaEye, FaEyeSlash, FaIdCard } from 'react-icons/fa';
+import { FaUser, FaLock, FaEnvelope, FaEye, FaEyeSlash, FaIdCard, FaPhone } from 'react-icons/fa'; // Importar FaPhone
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 import { registerUser } from '../services/api';
@@ -9,6 +9,7 @@ const Register = () => {
   const [cpf, setCpf] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
@@ -25,13 +26,17 @@ const Register = () => {
     }
 
     try {
-      const response = await registerUser({ cpf, name, email, password });
+      const userData = { cpf, name, email, password };
+      if (phone) {
+        userData.phone = phone;
+      }
 
+      const response = await registerUser(userData);
       if (response && (response.cpf || response.email)) {
         alert('Conta criada com sucesso! Você será redirecionado para o login.');
         navigate('/login');
       } else {
-        setError(response.error || "Erro desconhecido ao registrar. Formato de resposta inesperado.");
+        setError(response.error || "Erro desconhecido ao registrar.");
       }
     } catch (err) {
       setError("Falha ao conectar com o servidor ou erro no registro. Verifique a URL do backend e CORS.");
@@ -85,6 +90,16 @@ const Register = () => {
               required
             />
             <FaEnvelope className='icon' />
+          </div>
+          {/* << NOVO CAMPO: Input para o Telefone >> */}
+          <div className='input-field'>
+            <input
+              type="tel" // Tipo 'tel' para números de telefone
+              placeholder='Telefone (opcional)'
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+            <FaPhone className='icon' /> {/* Ícone para telefone */}
           </div>
           <div className='input-field'>
             <input
