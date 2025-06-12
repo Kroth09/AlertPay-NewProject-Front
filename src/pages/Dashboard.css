@@ -710,3 +710,72 @@
 .rbc-current-time-indicator {
     background-color: #e74c3c; /* Vermelho vibrante */
 }
+
+.connected-banks-section {
+  margin-top: 3rem; /* Espaçamento acima da seção */
+  border-top: 1px solid #404040;
+  padding-top: 2rem;
+}
+
+.connected-banks-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.connected-bank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style-type: none; /* Remove bolinhas da lista */
+  padding: 0;
+}
+
+.connected-bank-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: #404040;
+  border-radius: 8px;
+}
+
+.connected-bank-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.bank-icon-small {
+  font-size: 1.5rem;
+}
+
+.remove-bank-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  color: #a0a0a0;
+  cursor: pointer;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.remove-bank-btn:hover {
+  color: #ef4444; /* Vermelho no hover */
+  background-color: #484848;
+}
+
+.nenhuma-conexao-msg {
+  color: #a0a0a0;
+  text-align: center;
+  font-style: italic;
+}
+

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   FaUniversity, FaLandmark, FaBuilding, FaCity,
   FaEnvelope, FaLock, FaArrowLeft, FaTachometerAlt,
-  FaEye, FaEyeSlash
+  FaEye, FaEyeSlash, FaTrashAlt
 } from 'react-icons/fa';
 import './Dashboard.css';
 import { bankLogin } from '../services/api';
@@ -26,6 +26,19 @@ const LoginBancoPage = () => {
   const [error, setError] = useState(''); // Estado para exibir erros
   const [successMessage, setSuccessMessage] = useState(''); // NOVO ESTADO: Para mensagens de sucesso
   const [showPassword, setShowPassword] = useState(false);
+
+    const [connectedBanks, setConnectedBanks] = useState([
+    { name: 'Banco Kroth', icon: FaLandmark, colorClass: 'icon-orange' },
+    { name: 'Banco Lima', icon: FaUniversity, colorClass: 'icon-purple' },
+  ]);
+
+     const handleRemoveBank = (bankNameToRemove) => {
+    // Filtra a lista, mantendo apenas os bancos cujo nome é DIFERENTE do que queremos remover
+    setConnectedBanks(prevConnected => 
+      prevConnected.filter(bank => bank.name !== bankNameToRemove)
+    );
+    alert(`${bankNameToRemove} foi desconectado com sucesso!`);
+  };
 
   const handleBankSelect = (bank) => {
     setSelectedBankId(bank.id); // Armazena o ID
@@ -86,7 +99,7 @@ const LoginBancoPage = () => {
       <header className="dashboard-header">
         <div className="header-content">
           <div className="header-title">
-            <h1>Conectar com Instituição Financeira</h1>
+            <h1>Gerenciamento de Bancos</h1>
           </div>
           <div className="header-actions">
             <button className="btn btn-secondary" onClick={() => navigate('/dashboard')}>
@@ -102,7 +115,7 @@ const LoginBancoPage = () => {
 
             {!selectedBankId ? (
               <div>
-                <h2 className="form-title">Selecione uma instituição</h2>
+                <h2 className="form-title">Selecione uma instituição para Conectar</h2>
                 <div className="bank-selection-grid">
                   {banks.map((bank) => (
                     <button key={bank.id} className="bank-card" onClick={() => handleBankSelect(bank)}>
@@ -110,6 +123,27 @@ const LoginBancoPage = () => {
                       <span className="bank-card-name">{bank.name}</span>
                     </button>
                   ))}
+                </div>
+                 <div className="connected-banks-section">
+                  <h3 className="connected-banks-title">Bancos Já Conectados</h3>
+                  {connectedBanks.length > 0 ? (
+                    <ul className="connected-bank-list">
+                      {connectedBanks.map((bank) => (
+                        <li key={bank.name} className="connected-bank-item">
+                          <div className="connected-bank-info">
+                            <bank.icon className={`bank-icon-small ${bank.colorClass}`} />
+                            <span>{bank.name}</span>
+                          </div>
+                          <button onClick={() => handleRemoveBank(bank.name)} className="remove-bank-btn">
+                            <FaTrashAlt />
+                            <span>Remover</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="nenhuma-conexao-msg">Nenhum banco conectado no momento.</p>
+                  )}
                 </div>
               </div>
             ) : (

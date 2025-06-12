@@ -190,7 +190,7 @@ function Dashboard({ onLogout }) {
           <div className="header-actions">
             <button className="btn btn-tertiary" onClick={() => navigate('/login-banco')} style={{ marginRight: '10px' }}>
               <FaBankIcon style={{ marginRight: '5px' }} />
-              <span>Login com o Banco</span>
+              <span>Meus Bancos</span>
             </button>
 
             <div className="bank-filter-container" style={{ marginRight: '10px' }}>
