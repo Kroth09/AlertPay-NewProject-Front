@@ -58,3 +58,23 @@ export const bankLogin = async (loginData) => {
 	const response = await api.post('/bank-login', loginData);
 	return response.data;
 };
+
+/**
+ * REMOVIDO: Remove a autenticação (token) de um banco específico para o usuário logado.
+ * @param {string} bankId - O ID do banco a ser desconectado.
+ * @returns {Promise<any>} - A resposta da API.
+ */
+export const removeBankLogin = async (bankId) => {
+	const response = await api.delete(`/bank-rm-login/${bankId}`);
+	return response.data;
+};
+
+/**
+ * ADICIONADO: Busca a lista de bancos aos quais o usuário já está conectado.
+ * @returns {Promise<any>} - A resposta da API, esperando uma lista de bancos conectados.
+ */
+export const getConnectedBanks = async () => {
+	// Nota: Esta função assume que você criará um endpoint GET /bank-logins no seu backend.
+	const response = await api.get('/bank-logins');
+	return response.data;
+};

@@ -1,6 +1,6 @@
 // src/pages/LoginBancoPage.jsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   FaUniversity, FaLandmark, FaBuilding, FaCity,
@@ -8,10 +8,11 @@ import {
   FaEye, FaEyeSlash, FaTrashAlt
 } from 'react-icons/fa';
 import './Dashboard.css';
-import { bankLogin } from '../services/api';
+import { bankLogin, getConnectedBanks, removeBankLogin } from '../services/api';
 
-const banks = [
-  { name: 'Banco Kroth', id: 'APImini-bc', icon: FaLandmark, colorClass: 'icon-orange' },
+// Mova a lista de todos os bancos para uma constante no topo para fácil referência
+const ALL_BANKS_INFO = [
+  { name: 'Banco Kroth', id: 'api-mini-bc', icon: FaLandmark, colorClass: 'icon-orange' },
   { name: 'Banco Kaiser', id: 'banco-central', icon: FaBuilding, colorClass: 'icon-red' },
   { name: 'Banco Biancon', id: 'bank-account-api', icon: FaCity, colorClass: 'icon-blue' },
   { name: 'Banco Lima', id: 'mini-banco-central', icon: FaUniversity, colorClass: 'icon-purple' },
@@ -23,28 +24,61 @@ const LoginBancoPage = () => {
   const [selectedBankName, setSelectedBankName] = useState(null);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(''); // Estado para exibir erros
-  const [successMessage, setSuccessMessage] = useState(''); // NOVO ESTADO: Para mensagens de sucesso
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-    const [connectedBanks, setConnectedBanks] = useState([
-    { name: 'Banco Kroth', icon: FaLandmark, colorClass: 'icon-orange' },
-    { name: 'Banco Lima', icon: FaUniversity, colorClass: 'icon-purple' },
-  ]);
+  // Estados para gerenciar a lista de bancos conectados e o carregamento
+  const [connectedBanks, setConnectedBanks] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-     const handleRemoveBank = (bankNameToRemove) => {
-    // Filtra a lista, mantendo apenas os bancos cujo nome é DIFERENTE do que queremos remover
-    setConnectedBanks(prevConnected => 
-      prevConnected.filter(bank => bank.name !== bankNameToRemove)
-    );
-    alert(`${bankNameToRemove} foi desconectado com sucesso!`);
+  // Função para buscar os bancos conectados
+  const fetchConnectedBanks = async () => {
+    try {
+      setLoading(true);
+      // A API retorna um array de objetos, ex: [{ bank_id: 'api-mini-bc' }, ...]
+      const connectedResult = await getConnectedBanks();
+
+      // Mapeia os IDs retornados pela API para os detalhes completos (nome, ícone, cor)
+      const connectedWithDetails = connectedResult.map(b =>
+        ALL_BANKS_INFO.find(info => info.id === b.bank_id)
+      ).filter(Boolean); // .filter(Boolean) remove qualquer item nulo caso um ID não seja encontrado
+
+      setConnectedBanks(connectedWithDetails);
+      setError(''); // Limpa erros antigos se a busca for bem-sucedida
+    } catch (err) {
+      console.error("Erro ao buscar bancos conectados:", err);
+      setError("Não foi possível carregar suas conexões de banco.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Roda a busca de bancos conectados assim que o componente é montado
+  useEffect(() => {
+    fetchConnectedBanks();
+  }, []);
+
+  const handleRemoveBank = async (bankIdToRemove, bankNameToRemove) => {
+    // Confirmação com o usuário antes de remover
+    if (window.confirm(`Tem certeza que deseja remover a conexão com o ${bankNameToRemove}?`)) {
+      try {
+        await removeBankLogin(bankIdToRemove);
+        alert(`${bankNameToRemove} foi desconectado com sucesso!`);
+        // Atualiza a lista de bancos na tela
+        fetchConnectedBanks();
+      } catch (err) {
+        console.error("Erro ao remover conexão do banco:", err);
+        setError(err.response?.data?.error || "Falha ao remover a conexão do banco.");
+      }
+    }
   };
 
   const handleBankSelect = (bank) => {
-    setSelectedBankId(bank.id); // Armazena o ID
-    setSelectedBankName(bank.name); // Armazena o nome para exibição
-    setError(''); // Limpa qualquer erro anterior
-    setSuccessMessage(''); // << NOVO >> Limpa mensagens de sucesso anteriores
+    setSelectedBankId(bank.id);
+    setSelectedBankName(bank.name);
+    setError('');
+    setSuccessMessage('');
   };
 
   const handleBackToSelection = () => {
@@ -53,46 +87,38 @@ const LoginBancoPage = () => {
     setEmail('');
     setPassword('');
     setError('');
-    setSuccessMessage(''); // << NOVO >> Limpa mensagens ao voltar
+    setSuccessMessage('');
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(''); // Limpa erros anteriores
-    setSuccessMessage(''); // << NOVO >> Limpa mensagens de sucesso anteriores
+    setError('');
+    setSuccessMessage('');
 
-    const loginData = {
-      email,
-      password,
-      bankId: selectedBankId, // Usar o ID do banco
-    };
-
-    console.log("Enviando dados de login do banco para a API:", loginData);
+    const loginData = { email, password, bankId: selectedBankId };
 
     try {
       const response = await bankLogin(loginData);
-      console.log("Resposta do login do banco:", response);
-
       if (response && response.bankToken) {
-        setSuccessMessage(`Login no ${selectedBankName} realizado com sucesso! Redirecionando...`);
-
+        setSuccessMessage(`Login no ${selectedBankName} realizado com sucesso! Atualizando...`);
+        // Após conectar, atualiza a lista de bancos e volta para a tela de seleção
+        await fetchConnectedBanks();
         setTimeout(() => {
-          navigate('/dashboard');
-        }, 1000);
+          handleBackToSelection();
+        }, 1500);
       } else {
-        setError(response.message || "Erro desconhecido ao conectar com o banco. Resposta inesperada.");
+        setError(response.message || "Erro desconhecido ao conectar com o banco.");
       }
     } catch (err) {
       console.error("Erro ao fazer login no banco:", err);
-      if (err.response) {
-        setError(err.response.data.message || "Credenciais inválidas ou erro no servidor do banco.");
-      } else if (err.request) {
-        setError("Não foi possível conectar ao servidor do banco. Verifique a URL e CORS.");
-      } else {
-        setError("Ocorreu um erro inesperado ao tentar conectar com o banco.");
-      }
+      setError(err.response?.data?.message || "Credenciais inválidas ou erro no servidor do banco.");
     }
   };
+
+  // Filtra a lista de todos os bancos para mostrar apenas os que AINDA NÃO foram conectados
+  const availableBanksToConnect = ALL_BANKS_INFO.filter(
+    bank => !connectedBanks.some(cb => cb.id === bank.id)
+  );
 
   return (
     <div className="dashboard-page">
@@ -114,27 +140,39 @@ const LoginBancoPage = () => {
           <div className="card-body">
 
             {!selectedBankId ? (
+              // TELA DE SELEÇÃO DE BANCOS
               <div>
-                <h2 className="form-title">Selecione uma instituição para Conectar</h2>
-                <div className="bank-selection-grid">
-                  {banks.map((bank) => (
-                    <button key={bank.id} className="bank-card" onClick={() => handleBankSelect(bank)}>
-                      <bank.icon className={`bank-card-icon ${bank.colorClass}`} />
-                      <span className="bank-card-name">{bank.name}</span>
-                    </button>
-                  ))}
-                </div>
-                 <div className="connected-banks-section">
+                <h2 className="form-title">Conectar Nova Instituição</h2>
+                {loading ? (
+                  <p className="nenhuma-conexao-msg">Carregando bancos disponíveis...</p>
+                ) : availableBanksToConnect.length > 0 ? (
+                  <div className="bank-selection-grid">
+                    {availableBanksToConnect.map((bank) => (
+                      <button key={bank.id} className="bank-card" onClick={() => handleBankSelect(bank)}>
+                        <bank.icon className={`bank-card-icon ${bank.colorClass}`} />
+                        <span className="bank-card-name">{bank.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="nenhuma-conexao-msg">Todos os bancos disponíveis já estão conectados.</p>
+                )}
+
+                <div className="connected-banks-section">
                   <h3 className="connected-banks-title">Bancos Já Conectados</h3>
-                  {connectedBanks.length > 0 ? (
+                  {loading ? (
+                    <p className="nenhuma-conexao-msg">Carregando conexões...</p>
+                  ) : error ? (
+                    <p className="error-message" style={{ textAlign: 'center' }}>{error}</p>
+                  ) : connectedBanks.length > 0 ? (
                     <ul className="connected-bank-list">
                       {connectedBanks.map((bank) => (
-                        <li key={bank.name} className="connected-bank-item">
+                        <li key={bank.id} className="connected-bank-item">
                           <div className="connected-bank-info">
                             <bank.icon className={`bank-icon-small ${bank.colorClass}`} />
                             <span>{bank.name}</span>
                           </div>
-                          <button onClick={() => handleRemoveBank(bank.name)} className="remove-bank-btn">
+                          <button onClick={() => handleRemoveBank(bank.id, bank.name)} className="remove-bank-btn">
                             <FaTrashAlt />
                             <span>Remover</span>
                           </button>
@@ -147,15 +185,14 @@ const LoginBancoPage = () => {
                 </div>
               </div>
             ) : (
+              // TELA DE FORMULÁRIO DE LOGIN DO BANCO SELECIONADO
               <div>
                 <div className="selected-bank-header">
-                  <button onClick={handleBackToSelection} className="back-button">
-                    <FaArrowLeft />
-                  </button>
+                  <button onClick={handleBackToSelection} className="back-button"> <FaArrowLeft /> </button>
                   <FaUniversity className="bank-icon" />
-                  <h2 className="form-title">Login - {selectedBankName}</h2>
+                  <h2 className="form-title" style={{ marginBottom: 0 }}>Login - {selectedBankName}</h2>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} style={{ marginTop: '2rem' }}>
                   <div className="form-group">
                     <label htmlFor="email" className="form-label">E-mail</label>
                     <div className="input-with-icon">
@@ -163,42 +200,25 @@ const LoginBancoPage = () => {
                       <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-input" required />
                     </div>
                   </div>
-
                   <div className="form-group">
                     <label htmlFor="password" className="form-label">Senha</label>
                     <div className="input-with-icon">
                       <FaLock />
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="form-input"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="password-toggle-btn"
-                      >
+                      <input type={showPassword ? 'text' : 'password'} id="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-input" required />
+                      <button type="button" onClick={() => setShowPassword(!showPassword)} className="password-toggle-btn">
                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                       </button>
                     </div>
                   </div>
-
-                  {/* << NOVO: Exibir mensagem de sucesso >> */}
-                  {successMessage && <p className="success-message" style={{ color: 'lightgreen', textAlign: 'center', marginBottom: '10px' }}>{successMessage}</p>}
-                  {/* << Manter a exibição de erro, se houver >> */}
-                  {error && <p className="error-message" style={{ color: 'red', textAlign: 'center', marginBottom: '10px' }}>{error}</p>}
-
+                  {successMessage && <p className="success-message">{successMessage}</p>}
+                  {error && <p className="error-message">{error}</p>}
                   <div className="form-actions">
-                    <button type="button" onClick={() => navigate('/dashboard')} className="btn btn-secondary">Cancelar</button>
+                    <button type="button" onClick={handleBackToSelection} className="btn btn-secondary">Cancelar</button>
                     <button type="submit" className="btn btn-primary">Conectar</button>
                   </div>
                 </form>
               </div>
             )}
-
           </div>
         </div>
       </main>
