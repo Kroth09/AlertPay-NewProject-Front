@@ -1,4 +1,3 @@
-
 # AlertPay - Frontend do Projeto
 
 Este é o código-fonte do frontend para o projeto **AlertPay**, uma aplicação web criada para ajudar usuários a gerenciar e rastrear suas faturas. A interface foi desenvolvida com **React** e utiliza o **Vite** como ferramenta de construção, garantindo um ambiente de desenvolvimento rápido e moderno.
